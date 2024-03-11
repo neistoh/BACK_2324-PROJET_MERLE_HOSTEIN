@@ -10,7 +10,7 @@ const router = express.Router();
 // /events/XXXXX/update : formulaire de création pré-rempli des infos existantes
 
 router.get('/', (req, res) => {
-    res.render('index', {title: "Évènements"});
+    res.json({index:"event"});
 });
 
 module.exports = router;

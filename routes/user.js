@@ -8,7 +8,15 @@ const router = express.Router();
 // /user/favorites : récupérer la liste des favoris en BDD
 
 router.get('/', (req, res) => {
-    res.render('index', {title: "Profil"});
+    res.json({index:"user"});
+});
+
+/**
+ * Renvois les droits de l'utilisateurs
+ */
+router.post('/', (req, res) => {
+    console.log(req.body);
+    res.json({index:"user", droits:"W"});
 });
 
 module.exports = router;
