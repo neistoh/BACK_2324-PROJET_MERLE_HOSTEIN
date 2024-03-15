@@ -14,7 +14,7 @@ const client = new MongoClient(uri);
 // /user/favorites : récupérer la liste des favoris en BDD
 
 router.get('/', async (req, res) => {
-    const db = client.db("isenconnect")
+    const db = client.db(process.env.DATABASE_NAME)
     let collection = await db.collection("users");
     let results = await collection.findOne({"_id" : new ObjectId(req.params.id)})
         .limit(50)
@@ -23,6 +23,7 @@ router.get('/', async (req, res) => {
 });
 
 router.get('/favorites', async (req, res) => {
+    const db = client.db(process.env.DATABASE_NAME)
     let collection = await db.collection("favorites");
     let results = await collection.find({"_id" : new ObjectId(req.params.id)})
         .limit(50)

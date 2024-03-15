@@ -15,7 +15,7 @@ const client = new MongoClient(uri);
 // /events/XXXXX/update : formulaire de création pré-rempli des infos existantes
 
 router.get('/', async (req, res) => {
-    const db = client.db("isenconnect")
+    const db = client.db(process.env.DATABASE_NAME)
     let collection = await db.collection("events");
     let results = await collection.find({})
         .limit(50)
@@ -25,7 +25,7 @@ router.get('/', async (req, res) => {
 
 // Get event information for display
 router.get('/:id', async (req, res) => {
-    const db = client.db("isenconnect")
+    const db = client.db(process.env.DATABASE_NAME)
     let collection = await db.collection("events");
     let results = await collection.find({"_id" : new ObjectId(req.params.id)})
         .limit(50)
@@ -35,7 +35,7 @@ router.get('/:id', async (req, res) => {
 
 // Get event information for display in form
 router.get('/:id/update', async (req, res) => {
-    const db = client.db("isenconnect")
+    const db = client.db(process.env.DATABASE_NAME)
     let collection = await db.collection("events");
     let results = await collection.find({"_id" : new ObjectId(req.params.id)})
         .limit(50)

@@ -12,7 +12,7 @@ const client = new MongoClient(uri);
 // /chat/XXXXXXXX : récupérer tous les messages de la conversation et les afficher
 
 router.get('/', async (req, res) => {
-    const db = client.db("isenconnect")
+    const db = client.db(process.env.DATABASE_NAME)
     let collection = await db.collection("chats");
     let results = await collection.find({})
         .limit(50)
@@ -21,7 +21,7 @@ router.get('/', async (req, res) => {
 });
 
 router.get('/:id', async (req, res) => {
-    const db = client.db("isenconnect")
+    const db = client.db(process.env.DATABASE_NAME)
     let collection = await db.collection("chats");
     let results = await collection.find({"_id" : new ObjectId(req.params.id)})
         .limit(50)
