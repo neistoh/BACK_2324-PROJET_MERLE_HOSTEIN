@@ -4,11 +4,6 @@ const dbManager = require('../MongoDB/dbManager');
 const chat = require('../model/chat');
 const jwt = require("jsonwebtoken");
 
-//TODO : Logique
-// /chat : Récupérer la liste des conversations et les afficher
-// si clic sur la conversation XXXXXXXX, rediriger vers /chat/XXXXXXXX ?
-// /chat/XXXXXXXX : récupérer tous les messages de la conversation et les afficher
-
 router.get('/', async (req, res) => {
     let username = ""
     if (req.body.jwt) {

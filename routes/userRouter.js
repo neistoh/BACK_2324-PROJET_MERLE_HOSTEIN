@@ -4,12 +4,6 @@ const session = require('express-session');
 const dbManager = require('../MongoDB/dbManager')
 const utilisateur = require('../model/user')
 
-//TODO : Logique
-// /user : Lire les données en BDD et les afficher
-// Si clic bouton favoris, rediriger vers /user/favorites
-// /user/favorites : récupérer la liste des favoris en BDD
-
-
 /**
  * Récupère les infos d'un user
  */
