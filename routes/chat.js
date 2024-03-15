@@ -23,7 +23,7 @@ router.get('/', async (req, res) => {
 router.get('/:id', async (req, res) => {
     const db = client.db(process.env.DATABASE_NAME)
     let collection = await db.collection("chats");
-    let results = await collection.find({"_id" : new ObjectId(req.params.id)})
+    let results = await collection.find({"id" : new ObjectId(req.params.id)})
         .limit(50)
         .toArray();
     res.send(results).status(200);
