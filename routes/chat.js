@@ -7,7 +7,11 @@ const router = express.Router();
 // /chat/XXXXXXXX : récupérer tous les messages de la conversation et les afficher
 
 router.get('/', (req, res) => {
-    res.render('index', {title: "Discussions"});
+    res.render('listChats', {title: "Discussions"});
+});
+
+router.get('/:id', (req, res) => {
+    res.render('chat', {title: req.params.id});
 });
 
 module.exports = router;
