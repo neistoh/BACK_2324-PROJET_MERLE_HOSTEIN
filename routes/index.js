@@ -1,6 +1,11 @@
 const express = require('express');
 const router = express.Router();
 
+const { MongoClient } = require('mongodb');
+require('dotenv').config()
+const uri = process.env.MONGODB_URI;
+const client = new MongoClient(uri);
+
 //TODO : Logique
 // / : vérif de token JWT
 // Si pas de token JWT, redirection vers /login

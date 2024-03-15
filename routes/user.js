@@ -4,6 +4,11 @@ const session = require('express-session');
 const jwt = require('jsonwebtoken');
 
 
+const { MongoClient } = require('mongodb');
+require('dotenv').config()
+const uri = process.env.MONGODB_URI;
+const client = new MongoClient(uri);
+
 
 //TODO : Logique
 // /user : Lire les données en BDD et les afficher
