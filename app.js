@@ -2,6 +2,7 @@ const express = require('express');
 const path = require("path");
 const http = require('http');
 const {Server} = require("socket.io");
+const cors = require('cors');
 
 const chatRouter = require(path.join(__dirname, "/routes/chat"));
 const indexRouter = require(path.join(__dirname, "/routes/index"));
@@ -12,6 +13,10 @@ const app = express();
 const server = http.createServer(app);
 const io = new Server(server);
 const port = 3000;
+
+app.use(express.static('public'));
+app.use(express.urlencoded({ extended: true }));
+app.use(cors())
 
 io.on('connection', (socket) => {
     console.log(`New connection. Socket id : ${socket.id}`);

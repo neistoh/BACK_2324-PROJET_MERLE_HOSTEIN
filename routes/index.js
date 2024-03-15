@@ -9,7 +9,7 @@ const router = express.Router();
 // /accueil : page principale, liste les évents récupérés en base
 
 router.get('/', (req, res) => {
-    res.render('index', {title: "Bienvenue sur LinkedISEN !"});
+    res.json({index:"Index"});
 });
 
 module.exports = router;
