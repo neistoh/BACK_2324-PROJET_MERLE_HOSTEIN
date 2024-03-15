@@ -1,10 +1,6 @@
 const express = require('express');
 const router = express.Router();
-
-const { MongoClient } = require('mongodb');
-require('dotenv').config()
-const uri = process.env.MONGODB_URI;
-const client = new MongoClient(uri);
+const dbManager = require('../MongoDB/dbManager')
 
 //TODO : Logique
 // Si demande de visionnage d'un event, rediriger vers /events/XXXXX

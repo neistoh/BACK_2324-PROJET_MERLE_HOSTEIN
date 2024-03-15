@@ -2,13 +2,8 @@ const express = require('express');
 const router = express.Router();
 const session = require('express-session');
 const jwt = require('jsonwebtoken');
-
-
-const { MongoClient } = require('mongodb');
-require('dotenv').config()
-const uri = process.env.MONGODB_URI;
-const client = new MongoClient(uri);
-
+const dbManager = require('../MongoDB/dbManager')
+const utilisateur = require('../model/Utilisateur')
 
 //TODO : Logique
 // /user : Lire les données en BDD et les afficher
@@ -23,8 +18,10 @@ router.get('/', (req, res) => {
  * Renvois les droits de l'utilisateurs
  */
 //TODO: ajout du check des droits avec Mongo et si la session n'existe pas
-router.post('/', (req, res) => {
+router.post('/',
+    async (req, res) => {
     console.log(req.body);
+    console.log(await utilisateur.getUtilisateur(dbManager.getDBname(),dbManager.getClient()));
     if(req.body.jwt){
         jwt.verify(req.body.jwt, process.env.TOKEN_SECRET, (err, user) => {
             if(err){
