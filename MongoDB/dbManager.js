@@ -9,11 +9,11 @@ const client = new MongoClient(url);
 
 const dbManager = {
 
-    getClient: function (){
+    getClient: function () {
         return client;
     },
 
-    getDBname: function (){
+    getDBname: function () {
         return dbName;
     }
 }

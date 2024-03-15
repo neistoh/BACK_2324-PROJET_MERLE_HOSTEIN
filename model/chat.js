@@ -1,19 +1,17 @@
-const { ObjectId } = require('mongodb');
-
 const Chat = {
-    getAllChats: function (dbName,client, user) {
+    getAllChats: function (dbName, client, user) {
         const db = client.db(dbName);
         return db.collection("chats").find({
             $or: [
-                { User1: user },
-                { User2: user }
+                {User1: user},
+                {User2: user}
             ]
-        }).sort({ lastMessage: -1 }).toArray();
+        }).sort({lastMessage: -1}).toArray();
     },
 
-    getChat: function (dbName,client, id) {
+    getChat: function (dbName, client, id) {
         const db = client.db(dbName);
-        return db.collection("messages").find({"chat": id}).sort({ sentAt: -1 }).toArray();
+        return db.collection("messages").find({"chat": id}).sort({sentAt: -1}).toArray();
     }
 }
 

@@ -15,7 +15,7 @@ const io = new Server(server);
 const port = 3000;
 
 app.use(express.static('public'));
-app.use(express.urlencoded({ extended: true }));
+app.use(express.urlencoded({extended: true}));
 app.use(cors())
 app.use(express.json());
 

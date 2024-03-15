@@ -11,21 +11,21 @@ const jwt = require("jsonwebtoken");
 
 router.get('/', async (req, res) => {
     let username = ""
-    if(req.body.jwt){
+    if (req.body.jwt) {
         jwt.verify(req.body.jwt, process.env.TOKEN_SECRET, (err, user) => {
-            if(err){
+            if (err) {
                 console.log(err);
-            }else{
+            } else {
                 username = user;
             }
         })
     }
-    let chatData = await chat.getAllChats(dbManager.getDBname(),dbManager.getClient(), username)
+    let chatData = await chat.getAllChats(dbManager.getDBname(), dbManager.getClient(), username)
     res.json(chatData);
 });
 
 router.get('/:chatId', async (req, res) => {
-    let eventData = await chat.getChat(dbManager.getDBname(),dbManager.getClient(), req.params.chatId)
+    let eventData = await chat.getChat(dbManager.getDBname(), dbManager.getClient(), req.params.chatId)
     res.json(eventData);
 });
 
