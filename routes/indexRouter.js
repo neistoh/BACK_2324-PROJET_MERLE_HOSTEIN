@@ -18,11 +18,12 @@ const event = require("../model/event");
 router.post('/', async (req, res) => {
     console.log(req.body);
     if (req.body.jwt) {
-        jwt.verify(req.body.jwt, process.env.TOKEN_SECRET, (err, user) => {
+        jwt.verify(req.body.jwt, process.env.TOKEN_SECRET, async (err, user) => {
             if (err) {
                 console.log(err);
             } else {
-                res.json({index: "user", droits: "W", jwt: req.body.jwt});
+                let eventData = await event.getEvent(dbManager.getDBname(),dbManager.getClient());
+                res.json({index: "user", droits: "W", jwt: req.body.jwt, evtData: eventData});
             }
         })
     } else {
