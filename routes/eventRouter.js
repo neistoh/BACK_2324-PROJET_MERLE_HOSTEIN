@@ -14,6 +14,7 @@ const event = require('../model/event')
 /**
  * Récupère les conversations d'un utilisateur
  */
+// TODO : À garder ? Pas sûr...
 router.get('/', async (req, res) => {
     let eventData = await event.getAllEvents(dbManager.getDBname(), dbManager.getClient())
     res.json(eventData);

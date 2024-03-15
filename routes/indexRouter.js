@@ -15,15 +15,14 @@ const event = require("../model/event");
  * Renvois les droits de l'utilisateur et les
  */
 //TODO: ajout du check des droits avec Mongo et si la session n'existe pas
-router.post('/', async (req, res) => {
+router.post('/login', async (req, res) => {
     console.log(req.body);
     if (req.body.jwt) {
-        jwt.verify(req.body.jwt, process.env.TOKEN_SECRET, async (err, user) => {
+        jwt.verify(req.body.jwt, process.env.TOKEN_SECRET, (err, user) => {
             if (err) {
                 console.log(err);
             } else {
-                let eventData = await event.getEvent(dbManager.getDBname(),dbManager.getClient());
-                res.json({index: "user", droits: "W", jwt: req.body.jwt, evtData: eventData});
+                res.json({index: "user", droits: "W", jwt: req.body.jwt});
             }
         })
     } else {
@@ -37,5 +36,10 @@ function generateAccessToken(username) {
     process.env.TOKEN_SECRET = require('crypto').randomBytes(64).toString('hex');
     return jwt.sign(username, process.env.TOKEN_SECRET, {expiresIn: '1800s'});
 }
+
+router.get('/accueil', async (req, res) => {
+    let eventData = await event.getAllEvents(dbManager.getDBname(),dbManager.getClient());
+    res.json(eventData)
+})
 
 module.exports = router;
