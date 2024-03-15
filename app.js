@@ -17,6 +17,7 @@ const port = 3000;
 app.use(express.static('public'));
 app.use(express.urlencoded({ extended: true }));
 app.use(cors())
+app.use(express.json());
 
 io.on('connection', (socket) => {
     console.log(`New connection. Socket id : ${socket.id}`);
