@@ -2,9 +2,7 @@ const express = require('express');
 const router = express.Router();
 const session = require('express-session');
 const jwt = require('jsonwebtoken');
-
-
-const { MongoClient } = require('mongodb');
+const { MongoClient, ObjectId} = require('mongodb');
 require('dotenv').config()
 const uri = process.env.MONGODB_URI;
 const client = new MongoClient(uri);
@@ -15,8 +13,21 @@ const client = new MongoClient(uri);
 // Si clic bouton favoris, rediriger vers /user/favorites
 // /user/favorites : récupérer la liste des favoris en BDD
 
-router.get('/', (req, res) => {
-    res.json({index:"user"});
+router.get('/', async (req, res) => {
+    const db = client.db("isenconnect")
+    let collection = await db.collection("users");
+    let results = await collection.findOne({"_id" : new ObjectId(req.params.id)})
+        .limit(50)
+        .toArray();
+    res.send(results).status(200);
+});
+
+router.get('/favorites', async (req, res) => {
+    let collection = await db.collection("favorites");
+    let results = await collection.find({"_id" : new ObjectId(req.params.id)})
+        .limit(50)
+        .toArray();
+    res.send(results).status(200);
 });
 
 /**
