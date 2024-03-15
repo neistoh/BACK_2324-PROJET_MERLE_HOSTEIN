@@ -9,7 +9,7 @@ router.get('/', async (req, res) => {
     if (req.body.jwt) {
         jwt.verify(req.body.jwt, process.env.TOKEN_SECRET, (err, user) => {
             if (err) {
-                res.json(err);
+                res.json({error: err});
             } else {
                 username = user;
             }

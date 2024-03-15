@@ -5,7 +5,7 @@ const dbManager = require('../MongoDB/dbManager')
 const event = require("../model/event");
 
 /**
- * Renvois les droits de l'utilisateur
+ * Renvoie les droits de l'utilisateur
  */
 router.post('/', async (req, res) => {
     console.log(req.body);
