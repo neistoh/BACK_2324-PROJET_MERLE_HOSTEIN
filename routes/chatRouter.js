@@ -4,6 +4,9 @@ const dbManager = require('../MongoDB/dbManager');
 const chat = require('../model/chat');
 const jwt = require("jsonwebtoken");
 
+/**
+ * Récupère la liste des chats d'un utilisateur
+ */
 router.get('/', async (req, res) => {
     let username = ""
     if (req.body.jwt) {
@@ -19,9 +22,39 @@ router.get('/', async (req, res) => {
     res.json({chats: chatData});
 });
 
-router.get('/:chatId', async (req, res) => {
-    let chatData = await chat.getChat(dbManager.getDBname(), dbManager.getClient(), req.params.chatId)
+/**
+ * Récupère la liste des messages d'un chat
+ */
+router.get('/:id', async (req, res) => {
+    let chatData = await chat.getChat(dbManager.getDBname(), dbManager.getClient(), req.params.id)
     res.json({messages: chatData});
+});
+
+/**
+ * Ajoute un chat dans la collection `chats` de MongoDB
+ */
+router.post('/:id', async (req, res) => {
+    let chat = {
+        user1: req.body.user1,
+        user2: req.body.user2,
+        lastMessage: new Date().toString()
+    };
+    let chatData = await chat.createChat(dbManager.getDBname(), dbManager.getClient(), chat)
+    res.json({chat: chatData}); //Renvoie true si bien inséré
+});
+
+/**
+ * Ajoute un message dans la collection `messages` de MongoDB
+ */
+router.post('/:id/messages', async (req, res) => {
+    let msg = {
+        text: req.body.text,
+        chat: req.body.chat,
+        user: req.body.user,
+        sentAt: new Date().toString()
+    };
+    let chatData = await chat.insertMessage(dbManager.getDBname(), dbManager.getClient(), msg)
+    res.json({messages: chatData}); //Renvoie true si bien inséré
 });
 
 module.exports = router;

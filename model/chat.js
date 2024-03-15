@@ -12,6 +12,16 @@ const Chat = {
     getChat: function (dbName, client, id) {
         const db = client.db(dbName);
         return db.collection("messages").find({"chat": id}).sort({sentAt: -1}).toArray();
+    },
+
+    createChat: function (dbName, client, chat) {
+        const db = client.db(dbName);
+        return db.collection("chats").insertOne(chat);
+    },
+
+    insertMessage: function (dbName, client, msg) {
+        const db = client.db(dbName);
+        return db.collection("messages").insertOne(msg);
     }
 }
 

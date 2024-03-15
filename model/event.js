@@ -1,3 +1,4 @@
+const {ObjectId} = require("mongodb");
 const Event = {
     getAllEvents: function (dbName, client) {
         const today = new Date();
@@ -8,6 +9,17 @@ const Event = {
     getEvent: function (dbName, client, id) {
         const db = client.db(dbName);
         return db.collection("events").find({"_id": id}).toArray();
+    },
+
+    insertEvent: function (dbName, client, event) {
+        const db = client.db(dbName);
+        return db.collection("events").insertOne(event);
+    },
+
+    updateEvent: function (dbName, client, id, event) {
+        const db = client.db(dbName);
+        const query = {_id: new ObjectId(id)};
+        return db.collection("users").updateOne(query, event);
     },
 
     getEventByName: function (dbName, client, name) {
