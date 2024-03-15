@@ -15,12 +15,7 @@ const utilisateur = require('../model/user')
  */
 router.get('/', async (req, res) => {
     let userData = await utilisateur.getUser(dbManager.getDBname(), dbManager.getClient(), req.params.nickname)
-    res.json(userData);
-});
-
-router.get('/:nickname', async (req, res) => {
-    let userData = await utilisateur.getUser(dbManager.getDBname(), dbManager.getClient(), req.params.nickname)
-    res.json(userData);
+    res.json({usr: userData});
 });
 
 module.exports = router;

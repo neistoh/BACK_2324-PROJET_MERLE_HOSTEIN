@@ -20,15 +20,14 @@ router.post('/login', async (req, res) => {
     if (req.body.jwt) {
         jwt.verify(req.body.jwt, process.env.TOKEN_SECRET, (err, user) => {
             if (err) {
-                console.log(err);
+                res.json({error: err});
             } else {
                 res.json({index: "user", droits: "W", jwt: req.body.jwt});
             }
         })
     } else {
-        let eventData = await event.getEvent(dbManager.getDBname(),dbManager.getClient());
         const jwtSign = generateAccessToken({username: req.body.nickname});
-        res.json({index: "user", droits: "W", jwt: jwtSign, evtData: eventData});
+        res.json({index: "user", droits: "W", jwt: jwtSign});
     }
 });
 
@@ -39,7 +38,7 @@ function generateAccessToken(username) {
 
 router.get('/accueil', async (req, res) => {
     let eventData = await event.getAllEvents(dbManager.getDBname(),dbManager.getClient());
-    res.json(eventData)
+    res.json({eventsData: eventData})
 })
 
 module.exports = router;

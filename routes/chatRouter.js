@@ -14,19 +14,19 @@ router.get('/', async (req, res) => {
     if (req.body.jwt) {
         jwt.verify(req.body.jwt, process.env.TOKEN_SECRET, (err, user) => {
             if (err) {
-                console.log(err);
+                res.json(err);
             } else {
                 username = user;
             }
         })
     }
     let chatData = await chat.getAllChats(dbManager.getDBname(), dbManager.getClient(), username)
-    res.json(chatData);
+    res.json({chats: chatData});
 });
 
 router.get('/:chatId', async (req, res) => {
-    let eventData = await chat.getChat(dbManager.getDBname(), dbManager.getClient(), req.params.chatId)
-    res.json(eventData);
+    let chatData = await chat.getChat(dbManager.getDBname(), dbManager.getClient(), req.params.chatId)
+    res.json({messages: chatData});
 });
 
 module.exports = router;

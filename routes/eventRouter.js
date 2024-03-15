@@ -17,7 +17,7 @@ const event = require('../model/event')
 // TODO : À garder ? Pas sûr...
 router.get('/', async (req, res) => {
     let eventData = await event.getAllEvents(dbManager.getDBname(), dbManager.getClient())
-    res.json(eventData);
+    res.json({eventsData: eventData});
 });
 
 /**
@@ -25,7 +25,7 @@ router.get('/', async (req, res) => {
  */
 router.get('/:eventId', async (req, res) => {
     let eventData = await event.getEvent(dbManager.getDBname(), dbManager.getClient(), req.params.eventId)
-    res.json(eventData);
+    res.json({evtData: eventData});
 });
 
 module.exports = router;
