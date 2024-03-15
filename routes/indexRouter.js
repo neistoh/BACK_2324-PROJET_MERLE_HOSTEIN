@@ -5,7 +5,7 @@ const dbManager = require('../MongoDB/dbManager')
 const event = require("../model/event");
 
 /**
- * Renvois les droits de l'utilisateur et les
+ * Renvois les droits de l'utilisateur
  */
 router.post('/', async (req, res) => {
     console.log(req.body);
@@ -29,7 +29,7 @@ function generateAccessToken(username) {
 }
 
 router.get('/accueil', async (req, res) => {
-    let eventData = await event.getAllEvents(dbManager.getDBname(),dbManager.getClient());
+    let eventData = await event.getAllEvents(dbManager.getDBname(), dbManager.getClient());
     res.json({eventsData: eventData})
 })
 
