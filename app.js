@@ -4,10 +4,10 @@ const http = require('http');
 const {Server} = require("socket.io");
 const cors = require('cors');
 
-const chatRouter = require(path.join(__dirname, "/routes/chat"));
-const indexRouter = require(path.join(__dirname, "/routes/index"));
-const eventRouter = require(path.join(__dirname, "/routes/event"));
-const userRouter = require(path.join(__dirname, "/routes/user"));
+const chatRouter = require(path.join(__dirname, "/routes/chatRouter"));
+const indexRouter = require(path.join(__dirname, "/routes/indexRouter"));
+const eventRouter = require(path.join(__dirname, "/routes/eventRouter"));
+const userRouter = require(path.join(__dirname, "/routes/userRouter"));
 
 const app = express();
 const server = http.createServer(app);

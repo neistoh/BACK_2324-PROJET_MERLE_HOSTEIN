@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const dbManager = require('../MongoDB/dbManager')
+const event = require('../model/event')
 
 //TODO : Logique
 // Si demande de visionnage d'un event, rediriger vers /events/XXXXX
@@ -10,8 +11,20 @@ const dbManager = require('../MongoDB/dbManager')
 // /events/XXXXX : visionnage des détails d'un event (récupération des infos en BDD)
 // /events/XXXXX/update : formulaire de création pré-rempli des infos existantes
 
-router.get('/', (req, res) => {
-    res.json({index:"event"});
+/**
+ * Récupère les conversations d'un utilisateur
+ */
+router.get('/', async (req, res) => {
+    let eventData = await event.getAllEvents(dbManager.getDBname(),dbManager.getClient())
+    res.json(eventData);
+});
+
+/**
+ * Récupère les messages d'une conversation d'un utilisateur
+ */
+router.get('/:eventId', async (req, res) => {
+    let eventData = await event.getEvent(dbManager.getDBname(),dbManager.getClient(), req.params.eventId)
+    res.json(eventData);
 });
 
 module.exports = router;
