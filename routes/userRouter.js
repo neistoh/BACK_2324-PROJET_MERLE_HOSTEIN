@@ -24,9 +24,21 @@ router.get('/getFavoris', async (req, res) => {
  * Ajoute un utilisateur dans la collection `users` de MongoDB
  */
 router.post('/addUser', async (req, res) => {
-    const user = req.body;
     try {
-        await user.insertUser(dbManager.getDBname(), dbManager.getClient(), user)
+        const imageBase64 = req.file.buffer.toString('base64');
+        await user.insertUser(dbManager.getDBname(), dbManager.getClient(), {
+            nickname: req.body.nickname,
+            mail: req.body.mail,
+            pwd: req.body.password,
+            name: req.body.name,
+            firstName: req.body.firstName,
+            birthDate: req.body.birthDate,
+            avatar: {
+                filename: req.file.originalname,
+                contentType: req.file.mimetype,
+                data: imageBase64,
+            }
+        })
     } catch (err) {
         res.status(400).send(err.message)
     }

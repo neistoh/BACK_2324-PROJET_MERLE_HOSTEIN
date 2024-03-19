@@ -1,7 +1,7 @@
-const express = require('express');
-const router = express.Router();
 const dbManager = require('../MongoDB/dbManager')
+const express = require('express');
 const event = require('../model/event')
+const router = express.Router();
 
 /**
  * Récupère tous les events
@@ -45,7 +45,7 @@ router.put('/:id', async (req, res) => {
 })
 
 /**
- * Récupère un event selon son id
+ * Récupère tous les events d'un utilisateur
  */
 router.get('/byUser/:id', async (req, res) => {
     let eventData = await event.getAllEventsFromUser(dbManager.getDBname(), dbManager.getClient(), req.params.id)
