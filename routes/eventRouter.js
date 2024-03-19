@@ -68,6 +68,11 @@ router.put('/:id', async (req, res) => {
     }
 })
 
+router.get('/favorites/:id', async (req, res) => {
+    let eventData = await event.getAllFavoritesFromUsersOfEvent(dbManager.getDBname(), dbManager.getClient(), req.params.id)
+    res.json({evtData: eventData});
+})
+
 /**
  * Récupère tous les events d'un utilisateur
  */

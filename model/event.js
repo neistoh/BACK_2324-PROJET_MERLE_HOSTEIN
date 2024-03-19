@@ -23,6 +23,11 @@ const Event = {
         return db.collection("events").find({"owner": +userId}).sort({name: -1}).toArray();
     },
 
+    getAllFavoritesFromUsersOfEvent: function (dbName, client, eventId) {
+        const db = client.db(dbName);
+        return db.collection("favorites").find({"_id": +eventId}).sort({name: -1}).toArray();
+    },
+
     /**
      * Get an event by its unique ID
      * @param dbName
