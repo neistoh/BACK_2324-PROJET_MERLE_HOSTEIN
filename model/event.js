@@ -83,7 +83,7 @@ const Event = {
             query.price = price >= 0 ? {$gte: price} : {$lte: Math.abs(price)};
         }
 
-        return db.collection("events").find({"date": {$gte: today},"name": name, "theme": theme, "price": {$lte: price}})
+        return db.collection("events").find({"date": {$gte: today}, query})
     }
 }
 
