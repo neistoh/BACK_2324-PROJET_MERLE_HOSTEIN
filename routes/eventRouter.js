@@ -11,15 +11,11 @@ router.get('/', async (req, res) => {
     res.json({eventsData: eventData})
 })
 
+
+
 /**
- * Récupère les events liés à un ulisateur par son id
+* Récupère les events liés au filtre passé en query
  */
-router.get('/userId/:id', async (req, res) => {
-    let eventData = await event.getEvent(dbManager.getDBname(), dbManager.getClient(), req.params.id)
-    res.json({evtData: eventData});
-});
-
-
 router.get('/filtre', async (req, res) => {
     let eventData = await event.getEventsFiltered(dbManager.getDBname(), dbManager.getClient(), req.query)
     console.log(eventData);
@@ -49,5 +45,15 @@ router.put('/:id', async (req, res) => {
         res.status(400).send({error: err.message})
     }
 })
+
+
+/**
+ * Récupère un event lié à son id
+ */
+router.get('/:id', async (req, res) => {
+    let eventData = await event.getEvent(dbManager.getDBname(), dbManager.getClient(), req.params.id)
+    res.json({evtData: eventData});
+});
+
 
 module.exports = router;
