@@ -11,7 +11,6 @@ router.get('/', async (req, res) => {
     res.json({eventsData: eventData})
 })
 
-
 /**
  * Récupère les events selon le filtre passé en paramètre de l'URL
  */
