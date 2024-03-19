@@ -30,7 +30,6 @@ router.get('/filtre', async (req, res) => {
  * Ajoute un évènement dans la collection `events` de MongoDB
  */
 router.post('/', upload.single('image'), async (req, res) => {
-    const event = req.body;
     try {
         let image;
         if (req.file) {
