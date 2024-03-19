@@ -1,4 +1,3 @@
-const {ObjectId} = require("mongodb");
 const Event = {
     /**
      * Get all events in the collection "events"
@@ -9,7 +8,7 @@ const Event = {
     getAllEvents: function (dbName, client) {
         const today = new Date();
         const db = client.db(dbName);
-        return db.collection("events").find({"date": {$gte: today}}).toArray();
+        return db.collection("events").find({"date": {$gte: today}}).sort({name: -1}).toArray();
     },
 
     /**
@@ -21,7 +20,7 @@ const Event = {
      */
     getAllEventsFromUser: function (dbName, client, userId) {
         const db = client.db(dbName);
-        return db.collection("events").find({"owner": +userId}).toArray();
+        return db.collection("events").find({"owner": +userId}).sort({name: -1}).toArray();
     },
 
     /**
@@ -67,13 +66,14 @@ const Event = {
      * @param dbName
      * @param client
      * @param filtre
+     * @param tri
+     * @param ordre
      * @returns {*}
      */
-    getEventsFiltered: function (dbName, client, filtre) {
+    getEventsFiltered: function (dbName, client, filtre, tri, ordre) {
         const today = new Date();
         const db = client.db(dbName);
         let query = {}
-        console.log(filtre.price)
         if (filtre.name) query.name = filtre.name;
         if (filtre.theme) query.theme = filtre.theme;
         if (filtre.price) {
@@ -81,8 +81,8 @@ const Event = {
         }
 
         query.date = {$gte: today};
-
-        return db.collection("events").find(query).toArray()
+        if (tri === "date") return db.collection("events").find(query).sort({date: ordre}).toArray()
+        else return db.collection("events").find(query).sort({price: ordre}).toArray()
     }
 }
 

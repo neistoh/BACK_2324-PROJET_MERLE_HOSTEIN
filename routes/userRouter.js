@@ -21,8 +21,16 @@ router.get('/user', async (req, res) => {
 /**
  * Récupère les évènements favoris d'un utilisateur
  */
-router.get('/getFavoris', async (req, res) => {
+router.get('/getFavorites', async (req, res) => {
     let userData = await user.getFavorites(dbManager.getDBname(), dbManager.getClient(), req.params.nickname)
+    res.json({usr: userData});
+});
+
+/**
+ * Ajoute un évènement aux favoris d'un utilisateur
+ */
+router.post('/addFavorites', async (req, res) => {
+    let userData = await user.addFavorites(dbManager.getDBname(), dbManager.getClient(), req.body.nickname, req.body.eventId)
     res.json({usr: userData});
 });
 
@@ -67,7 +75,7 @@ router.post('/connect',
                 }
             })
         }else{
-            //Check si user exist et a le bon mot de passe, si non on renvoi un 201
+            //Check si user exist et a le bon mot de passe, sinon on renvoie un 201
             if(req.body.nickname){
                 let userData = await user.getUser(dbManager.getDBname(),dbManager.getClient(), req.body.nickname);
                 console.log(userData);

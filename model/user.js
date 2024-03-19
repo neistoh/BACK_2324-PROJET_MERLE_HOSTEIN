@@ -1,11 +1,14 @@
 const jwt = require("jsonwebtoken");
 const bcrypt = require('bcrypt');
-const {reject} = require("bcrypt/promises");
-
 const User = {
     getUser: function (dbName, client, nickname) {
         const db = client.db(dbName);
         return db.collection("users").find({"nickname": nickname}).toArray();
+    },
+
+    insertUser: function (dbName, client, user) {
+        const db = client.db(dbName);
+        return db.collection("users").insertOne(user);
     },
 
     getFavorites: function (dbName, client, nickname) {
@@ -13,9 +16,9 @@ const User = {
         return db.collection("favorites").find({"nickname": nickname}).toArray();
     },
 
-    insertUser: function (dbName, client, user) {
+    addFavorites: function (dbName, client, nickname, eventId) {
         const db = client.db(dbName);
-        return db.collection("users").insertOne(user);
+        return db.collection("favorites").insertOne({"user": +nickname, eventId: +eventId});
     },
 
     generateAccessToken: function (username) {
