@@ -13,6 +13,19 @@ const Event = {
     },
 
     /**
+     * Get all events in the collection "events" created by a specific user
+     * @param dbName
+     * @param client
+     * @param userId
+     * @returns {*}
+     */
+    getAllEventsFromUser: function (dbName, client, userId) {
+        const today = new Date();
+        const db = client.db(dbName);
+        return db.collection("events").find({"date": {$gte: today}, "owner": userId}).toArray();
+    },
+
+    /**
      * Get an event by its unique ID
      * @param dbName
      * @param client
@@ -60,6 +73,7 @@ const Event = {
      * @returns {*}
      */
     getEventsFiltered: function (dbName, client, name, theme, price) {
+        const today = new Date();
         const db = client.db(dbName);
         let query = {}
 
@@ -69,7 +83,7 @@ const Event = {
             query.price = price >= 0 ? {$gte: price} : {$lte: Math.abs(price)};
         }
 
-        return db.collection("events").find({"name": name, "theme": theme, "price": {$lte: price}})
+        return db.collection("events").find({"date": {$gte: today},"name": name, "theme": theme, "price": {$lte: price}})
     }
 }
 

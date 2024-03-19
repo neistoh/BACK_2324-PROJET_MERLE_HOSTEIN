@@ -38,7 +38,7 @@ router.put('/:id', async (req, res) => {
 /**
  * Filtre les events selon les paramètres de l'URL
  */
-router.get('/:filter', async (req, res) => {
+router.get('/filter', async (req, res) => {
     let eventData = await event.getEventsFiltered(dbManager.getDBname(), dbManager.getClient(), req.query.name, req.query.theme, req.query.price);
     res.json({eventsData: eventData})
 })
