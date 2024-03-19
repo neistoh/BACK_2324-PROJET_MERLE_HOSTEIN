@@ -14,7 +14,7 @@ const upload = multer({storage: storage});
  */
 router.get('/', async (req, res) => {
     let eventData = await event.getAllEvents(dbManager.getDBname(), dbManager.getClient());
-    res.json({eventsData: eventData})
+    res.json({eventData: eventData})
 })
 
 /**
@@ -70,7 +70,7 @@ router.put('/:id', async (req, res) => {
 
 router.get('/favorites/:id', async (req, res) => {
     let eventData = await event.getAllFavoritesFromUsersOfEvent(dbManager.getDBname(), dbManager.getClient(), req.params.id)
-    res.json({evtData: eventData});
+    res.json({eventData: eventData});
 })
 
 /**
@@ -78,7 +78,7 @@ router.get('/favorites/:id', async (req, res) => {
  */
 router.get('/byUser/:id', async (req, res) => {
     let eventData = await event.getAllEventsFromUser(dbManager.getDBname(), dbManager.getClient(), req.params.id)
-    res.json({evtData: eventData});
+    res.json({eventData: eventData});
 });
 
 /**
@@ -86,8 +86,15 @@ router.get('/byUser/:id', async (req, res) => {
  */
 router.get('/:id', async (req, res) => {
     let eventData = await event.getEvent(dbManager.getDBname(), dbManager.getClient(), req.params.id)
-    res.json({evtData: eventData});
+    res.json({eventData: eventData});
 });
 
+/**
+ * Vérifie si un event est possédé par un certain utilisateur
+ */
+router.get('/ownership', async (req, res) => {
+    let eventData = await event.isUserOwner(dbManager.getDBname(), dbManager.getClient(), req.query.eventId, req.query.userId)
+    res.json({eventData: eventData});
+});
 
 module.exports = router;

@@ -88,6 +88,18 @@ const Event = {
         query.date = {$gte: today};
         if (tri === "date") return db.collection("events").find(query).sort({date: ordre}).toArray()
         else return db.collection("events").find(query).sort({price: ordre}).toArray()
+    },
+
+    /**
+     * Check if user is owner of event
+     * @param dbName
+     * @param client
+     * @param eventId
+     * @param userId
+     */
+    isUserOwner: function (dbName, client, eventId, userId) {
+        const db = client.db(dbName);
+        return db.collection("events").findOne({_id: +eventId, owner: userId});
     }
 }
 
