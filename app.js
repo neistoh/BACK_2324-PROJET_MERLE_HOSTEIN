@@ -5,7 +5,6 @@ const {Server} = require("socket.io");
 const cors = require('cors');
 
 const chatRouter = require(path.join(__dirname, "/routes/chatRouter"));
-const indexRouter = require(path.join(__dirname, "/routes/indexRouter"));
 const eventRouter = require(path.join(__dirname, "/routes/eventRouter"));
 const userRouter = require(path.join(__dirname, "/routes/userRouter"));
 
@@ -23,7 +22,6 @@ io.on('connection', (socket) => {
     console.log(`New connection. Socket id : ${socket.id}`);
 });
 
-app.use("/", indexRouter);
 app.use("/chat", chatRouter);
 app.use("/event", eventRouter);
 app.use("/user", userRouter);
