@@ -21,7 +21,7 @@ const Event = {
      */
     getAllEventsFromUser: function (dbName, client, userId) {
         const db = client.db(dbName);
-        return db.collection("events").find({"owner": userId}).toArray();
+        return db.collection("events").find({"owner": +userId}).toArray();
     },
 
     /**
@@ -33,7 +33,7 @@ const Event = {
      */
     getEvent: function (dbName, client, id) {
         const db = client.db(dbName);
-        return db.collection("events").find({"_id": id}).toArray();
+        return db.collection("events").find({"_id": +id}).toArray();
     },
 
     /**
@@ -58,7 +58,7 @@ const Event = {
      */
     updateEvent: function (dbName, client, id, event) {
         const db = client.db(dbName);
-        const query = {_id: new ObjectId(id)};
+        const query = {_id: +id};
         return db.collection("users").updateOne(query, event);
     },
 
