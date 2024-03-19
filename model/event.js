@@ -72,20 +72,19 @@ const Event = {
      * @param price
      * @returns {*}
      */
-    getEventsFiltered: function (dbName, client, name, theme, price) {
-        const today = new Date();
+    getEventsFiltered: function (dbName, client, filtre) {
         const db = client.db(dbName);
         let query = {}
-
-        if (name) query.name = name;
-        if (theme) query.theme = theme;
-        if (price) {
-            query.price = price >= 0 ? {$gte: price} : {$lte: Math.abs(price)};
+        console.log(filtre.price)
+        if (filtre.name) query.name = filtre.name;
+        if (filtre.theme) query.theme = filtre.theme;
+        if (filtre.price) {
+            query.price = filtre.price >= 0 ? {$gte: +filtre.price} : {$lte: Math.abs(filtre.price)};
         }
 
         query.date = {$gte: today};
 
-        return db.collection("events").find(query)
+        return db.collection("events").find(query).toArray()
     }
 }
 

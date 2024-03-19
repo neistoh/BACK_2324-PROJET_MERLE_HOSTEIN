@@ -19,7 +19,7 @@ const User = {
     },
 
     generateAccessToken: function (username) {
-        return jwt.sign(username, process.env.TOKEN_SECRET, { expiresIn: '1800s' });
+        return jwt.sign(username, process.env.TOKEN_SECRET, { expiresIn: '7d' });
     },
 
     hashPassword: function (passwordToAshe){
