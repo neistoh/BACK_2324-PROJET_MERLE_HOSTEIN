@@ -20,9 +20,8 @@ const Event = {
      * @returns {*}
      */
     getAllEventsFromUser: function (dbName, client, userId) {
-        const today = new Date();
         const db = client.db(dbName);
-        return db.collection("events").find({"date": {$gte: today}, "owner": userId}).toArray();
+        return db.collection("events").find({"owner": userId}).toArray();
     },
 
     /**
@@ -67,12 +66,11 @@ const Event = {
      * Get a list of events filtered by a combination of name, theme and price (greater or equal than and lesser or equal than)
      * @param dbName
      * @param client
-     * @param name
-     * @param theme
-     * @param price
+     * @param filtre
      * @returns {*}
      */
     getEventsFiltered: function (dbName, client, filtre) {
+        const today = new Date();
         const db = client.db(dbName);
         let query = {}
         console.log(filtre.price)
