@@ -47,7 +47,7 @@ const User = {
      */
     addFavorites: function (dbName, client, nickname, eventId) {
         const db = client.db(dbName);
-        return db.collection("favorites").insertOne({"user": +nickname, eventId: +eventId});
+        return db.collection("favorites").insertOne({"user": nickname, eventId: +eventId});
     },
 
     /**

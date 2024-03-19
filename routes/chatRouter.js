@@ -8,17 +8,17 @@ const jwt = require("jsonwebtoken");
  * Récupère la liste des chats d'un utilisateur
  */
 router.get('/', async (req, res) => {
-    let username = ""
+    let nickname = ""
     if (req.body.jwt) {
         jwt.verify(req.body.jwt, process.env.TOKEN_SECRET, (err, user) => {
             if (err) {
                 res.json({error: err});
             } else {
-                username = user;
+                nickname = user;
             }
         })
     }
-    let chatData = await chat.getAllChats(dbManager.getDBname(), dbManager.getClient(), username)
+    let chatData = await chat.getAllChats(dbManager.getDBname(), dbManager.getClient(), nickname)
     res.json({chats: chatData});
 });
 

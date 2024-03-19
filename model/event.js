@@ -95,11 +95,11 @@ const Event = {
      * @param dbName
      * @param client
      * @param eventId
-     * @param userId
+     * @param nickname
      */
-    isUserOwner: function (dbName, client, eventId, userId) {
+    isUserOwner: function (dbName, client, eventId, nickname) {
         const db = client.db(dbName);
-        return db.collection("events").findOne({_id: +eventId, owner: userId});
+        return db.collection("events").findOne({_id: +eventId, owner: nickname});
     }
 }
 

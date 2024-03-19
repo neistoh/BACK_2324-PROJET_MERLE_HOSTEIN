@@ -14,7 +14,7 @@ const upload = multer({storage: storage});
  * Récupère les infos d'un utilisateur
  */
 router.get('/user', async (req, res) => {
-    let userData = await user.getUser(dbManager.getDBname(), dbManager.getClient(), req.params.nickname)
+    let userData = await user.getUser(dbManager.getDBname(), dbManager.getClient(), req.body.nickname)
     res.json({usr: userData});
 });
 
@@ -22,7 +22,7 @@ router.get('/user', async (req, res) => {
  * Récupère les évènements favoris d'un utilisateur
  */
 router.get('/getFavorites', async (req, res) => {
-    let userData = await user.getFavorites(dbManager.getDBname(), dbManager.getClient(), req.params.nickname)
+    let userData = await user.getFavorites(dbManager.getDBname(), dbManager.getClient(), req.body.nickname)
     res.json({usr: userData});
 });
 

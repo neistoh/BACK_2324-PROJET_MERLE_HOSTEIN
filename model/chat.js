@@ -3,15 +3,15 @@ const Chat = {
      * Get all chats in the collection "chats"
      * @param dbName
      * @param client
-     * @param user
+     * @param nickname
      * @returns {*}
      */
-    getAllChats: function (dbName, client, user) {
+    getAllChats: function (dbName, client, nickname) {
         const db = client.db(dbName);
         return db.collection("chats").find({
             $or: [
-                {User1: +user},
-                {User2: +user}
+                {User1: nickname},
+                {User2: nickname}
             ]
         }).sort({lastMessage: -1}).toArray();
     },

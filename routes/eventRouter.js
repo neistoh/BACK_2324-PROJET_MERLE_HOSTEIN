@@ -93,7 +93,7 @@ router.get('/:id', async (req, res) => {
  * Vérifie si un event est possédé par un certain utilisateur
  */
 router.get('/ownership', async (req, res) => {
-    let eventData = await event.isUserOwner(dbManager.getDBname(), dbManager.getClient(), req.query.eventId, req.query.userId)
+    let eventData = await event.isUserOwner(dbManager.getDBname(), dbManager.getClient(), req.query.eventId, req.query.nickname)
     res.json({eventData: eventData});
 });
 
