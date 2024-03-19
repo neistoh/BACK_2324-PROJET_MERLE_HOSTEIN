@@ -4,6 +4,14 @@ const dbManager = require('../MongoDB/dbManager')
 const event = require('../model/event')
 
 /**
+ * Récupère tous les events
+ */
+router.get('/', async (req, res) => {
+    let eventData = await event.getAllEvents(dbManager.getDBname(), dbManager.getClient());
+    res.json({eventsData: eventData})
+})
+
+/**
  * Récupère les events liés à un ulisateur par son id
  */
 router.get('/userId/:id', async (req, res) => {
