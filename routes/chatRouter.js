@@ -33,7 +33,7 @@ router.get('/:id', async (req, res) => {
 /**
  * Ajoute un chat dans la collection `chats` de MongoDB
  */
-router.post('/:id', async (req, res) => {
+router.post('/createChat/:id', async (req, res) => {
     let chat = {
         user1: req.body.user1,
         user2: req.body.user2,
@@ -46,7 +46,7 @@ router.post('/:id', async (req, res) => {
 /**
  * Ajoute un message dans la collection `messages` de MongoDB
  */
-router.post('/:id/messages', async (req, res) => {
+router.post('/addMessage/:id', async (req, res) => {
     let msg = {
         text: req.body.text,
         chat: req.body.chat,
