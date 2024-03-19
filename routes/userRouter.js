@@ -40,11 +40,12 @@ router.post('/addFavorites', async (req, res) => {
 router.post('/addUser', upload.single('image'), async (req, res) => {
     try {
         let imageBase64;
+        const pwd = await user.hashPassword(req.body.password);
         if (req.file) imageBase64 = req.file.buffer.toString('base64');
         await user.insertUser(dbManager.getDBname(), dbManager.getClient(), {
             nickname: req.body.nickname,
             mail: req.body.mail,
-            pwd: req.body.password,
+            pwd: pwd,
             name: req.body.name,
             firstName: req.body.firstName,
             birthDate: req.body.birthDate,

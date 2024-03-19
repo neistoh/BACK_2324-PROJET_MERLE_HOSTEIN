@@ -26,15 +26,17 @@ const User = {
     },
 
     hashPassword: function (passwordToAshe){
-        bcrypt.genSalt(10, function(err, salt) {
-            if (err)
-                return err;
-
-            bcrypt.hash(passwordToAshe, salt, function (err, hash) {
-                console.log(hash);
-                if(err)
+        return new Promise(() => {
+            bcrypt.genSalt(10, function (err, salt) {
+                if (err)
                     return err;
-                return hash;
+
+                bcrypt.hash(passwordToAshe, salt, function (err, hash) {
+                    console.log(hash);
+                    if (err)
+                        return err;
+                    return hash;
+                });
             });
         });
     },
