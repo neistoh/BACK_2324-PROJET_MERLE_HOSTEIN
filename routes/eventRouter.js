@@ -1,7 +1,13 @@
 const dbManager = require('../MongoDB/dbManager')
 const express = require('express');
 const event = require('../model/event')
+const {memoryStorage} = require("multer");
+const multer = require("multer");
 const router = express.Router();
+
+// Set up multer storage configuration
+const storage = memoryStorage();
+const upload = multer({storage: storage});
 
 /**
  * Récupère tous les events
@@ -23,10 +29,29 @@ router.get('/filtre', async (req, res) => {
 /**
  * Ajoute un évènement dans la collection `events` de MongoDB
  */
-router.post('/', async (req, res) => {
+router.post('/', upload.single('image'), async (req, res) => {
     const event = req.body;
     try {
-        event.insertEvent(dbManager.getDBname(), dbManager.getClient(), event)
+        let image;
+        if (req.file) {
+            image = {
+                filename: req.file.originalname,
+                contentType:
+                req.file.mimetype,
+                data:
+                    req.file.buffer.toString('base64')
+            }
+        } else {
+            image = req.body.imageURL
+        }
+        event.insertEvent(dbManager.getDBname(), dbManager.getClient(), {
+            name: req.body.name,
+            price: req.body.price,
+            date: req.body.date,
+            theme: req.body.theme,
+            owner: req.body.userId,
+            image: image
+        })
     } catch (err) {
         res.status(400).send(err.message)
     }

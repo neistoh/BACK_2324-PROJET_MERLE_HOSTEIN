@@ -3,6 +3,12 @@ const router = express.Router();
 const dbManager = require('../MongoDB/dbManager')
 const jwt = require('jsonwebtoken');
 const user = require('../model/user')
+const multer = require("multer");
+const {memoryStorage} = require("multer");
+
+// Set up multer storage configuration
+const storage = memoryStorage();
+const upload = multer({storage: storage});
 
 /**
  * Récupère les infos d'un utilisateur
@@ -23,9 +29,10 @@ router.get('/getFavoris', async (req, res) => {
 /**
  * Ajoute un utilisateur dans la collection `users` de MongoDB
  */
-router.post('/addUser', async (req, res) => {
+router.post('/addUser', upload.single('image'), async (req, res) => {
     try {
-        const imageBase64 = req.file.buffer.toString('base64');
+        let imageBase64;
+        if (req.file) imageBase64 = req.file.buffer.toString('base64');
         await user.insertUser(dbManager.getDBname(), dbManager.getClient(), {
             nickname: req.body.nickname,
             mail: req.body.mail,
