@@ -136,12 +136,26 @@ router.get('/ownership', async (req, res) => {
  * Modifie un message dans la collection `messages` de MongoDB
  */
 router.put('/:id', async (req, res) => {
-    const event = req.body;
+    const eventBody = req.body;
     try {
-        event.updateEvent(dbManager.getDBname(), dbManager.getClient(), req.params.id, event)
+        let eventData = await event.updateEvent(dbManager.getDBname(), dbManager.getClient(), req.params.id, eventBody)
+        console.log(eventData);
+        res.send({eventData:eventData});
     } catch (err) {
         res.status(400).send({error: err.message})
     }
 })
+
+/**
+ * Récupère un event selon son id
+ */
+router.get('/:id', async (req, res) => {
+    try {
+        let eventData = await event.getEvent(dbManager.getDBname(), dbManager.getClient(), req.params.id)
+        res.json({eventData: eventData});
+    } catch (err) {
+        res.status(400).send({error: err.message})
+    }
+});
 
 module.exports = router;

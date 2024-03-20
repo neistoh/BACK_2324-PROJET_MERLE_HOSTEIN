@@ -64,7 +64,13 @@ const Event = {
     updateEvent: function (dbName, client, id, event) {
         const db = client.db(dbName);
         const query = {_id: +id};
-        return db.collection("users").updateOne(query, event);
+        let update = {}
+        event.name?update.name=event.name:'';
+        event.price?update.price=event.price:'';
+        event.theme?update.theme=event.theme:'';
+        event.date?update.date=event.date:'';
+        db.collection("events").updateOne(query, {$set:update});
+        return this.getEvent(dbName,client,id);
     },
 
     /**
@@ -98,8 +104,7 @@ const Event = {
      */
     isUserOwner: function (dbName, client, eventId, nickname) {
         const db = client.db(dbName);
-        const data = db.collection("events").findOne({_id: +eventId, owner: nickname});
-        return data !== null
+        return db.collection("events").findOne({_id: +eventId, owner: nickname});
     }
 }
 
