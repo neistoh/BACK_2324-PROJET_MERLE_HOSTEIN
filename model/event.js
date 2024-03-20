@@ -26,7 +26,7 @@ const Event = {
 
     getAllFavoritesFromUsersOfEvent: function (dbName, client, eventId) {
         const db = client.db(dbName);
-        return db.collection("favorites").find({"_id": +eventId}).sort({name: -1}).toArray();
+        return db.collection("favorites").find({"event": +eventId}).sort({name: -1}).toArray();
     },
 
     /**

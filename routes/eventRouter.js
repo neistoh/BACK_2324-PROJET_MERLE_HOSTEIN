@@ -46,7 +46,7 @@ router.post('/', upload.single('image'), async (req, res) => {
                 if (err) {
                     res.json({error: err});
                 } else {
-                    nickname = user;
+                    nickname = user.username;
                 }
             })
         }
@@ -120,7 +120,7 @@ router.get('/ownership', async (req, res) => {
                 if (err) {
                     res.json({error: err});
                 } else {
-                    nickname = user;
+                    nickname = user.username;
                 }
             })
         }
@@ -139,7 +139,6 @@ router.put('/:id', async (req, res) => {
     const eventBody = req.body;
     try {
         let eventData = await event.updateEvent(dbManager.getDBname(), dbManager.getClient(), req.params.id, eventBody)
-        console.log(eventData);
         res.send({eventData:eventData});
     } catch (err) {
         res.status(400).send({error: err.message})

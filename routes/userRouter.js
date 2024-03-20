@@ -1,8 +1,8 @@
 const express = require('express');
 const router = express.Router();
-const dbManager = require('../MongoDB/dbManager')
+const dbManager = require('../MongoDB/dbManager');
 const jwt = require('jsonwebtoken');
-const user = require('../model/user')
+const user = require('../model/user');
 const multer = require("multer");
 const {memoryStorage} = require("multer");
 
@@ -21,7 +21,7 @@ router.get('/user', async (req, res) => {
                 if (err) {
                     res.json({error: err});
                 } else {
-                    nickname = user;
+                    nickname = user.username;
                 }
             })
         }
@@ -43,7 +43,7 @@ router.get('/getFavorites', async (req, res) => {
                 if (err) {
                     res.json({error: err});
                 } else {
-                    nickname = user;
+                    nickname = user.username;
                 }
             })
         }
@@ -65,7 +65,7 @@ router.post('/addFavorites', async (req, res) => {
                 if (err) {
                     res.json({error: err});
                 } else {
-                    nickname = user;
+                    nickname = user.username;
                 }
             })
         }

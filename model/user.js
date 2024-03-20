@@ -1,5 +1,8 @@
 const jwt = require("jsonwebtoken");
 const bcrypt = require('bcrypt');
+const event = require('./event');
+const {all} = require("express/lib/application");
+
 const User = {
     /**
      * Get data about a user from the collection "users"
@@ -37,6 +40,11 @@ const User = {
         return db.collection("favorites").find({"nickname": nickname}).toArray();
     },
 
+    getAllFavorites: function (dbName, client) {
+        const db = client.db(dbName);
+        return db.collection("favorites").find({}).toArray();
+    },
+
     /**
      * Add an event to the favorites of a user
      * @param dbName
@@ -45,9 +53,16 @@ const User = {
      * @param eventId
      * @returns {*}
      */
-    addFavorites: function (dbName, client, nickname, eventId) {
+    addFavorites: async function (dbName, client, nickname, eventId) {
         const db = client.db(dbName);
-        return db.collection("favorites").insertOne({"user": nickname, eventId: +eventId});
+        const favorisExist = await db.collection("favorites").find({user: nickname, event: +eventId}).toArray();
+        console.log(favorisExist.length>0);
+        if(favorisExist.length>0){
+            return '';
+        }
+        const allEvent = await this.getAllFavorites(dbName,client);
+        const _id = allEvent.length+1;
+        return db.collection("favorites").insertOne({_id:_id, user: nickname, event: +eventId});
     },
 
     /**
