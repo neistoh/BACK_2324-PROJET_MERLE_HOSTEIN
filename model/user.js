@@ -56,7 +56,7 @@ const User = {
      * @returns {*}
      */
     generateAccessToken: function (username) {
-        return jwt.sign(username, process.env.TOKEN_SECRET, { expiresIn: '7d' });
+        return jwt.sign(username, process.env.TOKEN_SECRET, {expiresIn: '7d'});
     },
 
     /**
@@ -64,7 +64,7 @@ const User = {
      * @param passwordToAshe
      * @returns {Promise<unknown>}
      */
-    hashPassword: function (passwordToAshe){
+    hashPassword: function (passwordToAshe) {
         return new Promise(() => {
             bcrypt.genSalt(10, function (err, salt) {
                 if (err)
@@ -86,11 +86,11 @@ const User = {
      * @param passwordHash
      * @returns {Promise<unknown>}
      */
-    checkPasswordValidity: async function (passwordClear, passwordHash){
-        return new Promise(res=>{
-            bcrypt.compare(passwordClear, passwordHash, function(err, isPasswordMatch) {
+    checkPasswordValidity: async function (passwordClear, passwordHash) {
+        return new Promise(res => {
+            bcrypt.compare(passwordClear, passwordHash, function (err, isPasswordMatch) {
                 console.log(isPasswordMatch);
-                if(err) {
+                if (err) {
                     console.log(err);
                     res(isPasswordMatch);
                 }

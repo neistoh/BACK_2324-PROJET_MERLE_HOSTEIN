@@ -74,40 +74,40 @@ router.post('/addUser', upload.single('image'), async (req, res) => {
 
 router.post('/connect',
     async (req, res) => {
-        if(req.body.jwt){
+        if (req.body.jwt) {
             jwt.verify(req.body.jwt, process.env.TOKEN_SECRET, (err, user) => {
-                if(err){
-                    if(err.message === "invalid signature"){
-                        res.status(401).json({error:err,action:"removeJwt"});
+                if (err) {
+                    if (err.message === "invalid signature") {
+                        res.status(401).json({error: err, action: "removeJwt"});
                         return;
                     }
                     console.log(err);
-                    res.status(401).json({error:err});
-                }else{
-                    res.json({index:"user", droits:"W", jwt:req.body.jwt});
+                    res.status(401).json({error: err});
+                } else {
+                    res.json({index: "user", droits: "W", jwt: req.body.jwt});
                 }
             })
-        }else{
+        } else {
             //Check si user exist et a le bon mot de passe, sinon on renvoie un 201
-            if(req.body.nickname){
-                let userData = await user.getUser(dbManager.getDBname(),dbManager.getClient(), req.body.nickname);
+            if (req.body.nickname) {
+                let userData = await user.getUser(dbManager.getDBname(), dbManager.getClient(), req.body.nickname);
                 console.log(userData);
-                if(userData.length > 0) {
-                    const isPasswordValid = await user.checkPasswordValidity(req.body.password,userData[0].password);
-                    if(!isPasswordValid){
-                        res.status(401).json({error:"badPassword",action:"badPassword"});
+                if (userData.length > 0) {
+                    const isPasswordValid = await user.checkPasswordValidity(req.body.password, userData[0].password);
+                    if (!isPasswordValid) {
+                        res.status(401).json({error: "badPassword", action: "badPassword"});
                         return;
                     }
-                }else{
-                    res.status(401).json({error:"badPassword",action:"badPassword"});
+                } else {
+                    res.status(401).json({error: "badPassword", action: "badPassword"});
                     return;
                 }
-                const jwtSign = user.generateAccessToken({ username: 'test' })
-                res.json({index:"user", droits:"W", jwt:jwtSign});
+                const jwtSign = user.generateAccessToken({username: 'test'})
+                res.json({index: "user", droits: "W", jwt: jwtSign});
                 return;
             }
-            res.status(401).json({error:"badPassword",action:"badPassword"});
+            res.status(401).json({error: "badPassword", action: "badPassword"});
         }
-});
+    });
 
 module.exports = router;

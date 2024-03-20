@@ -5,6 +5,7 @@ const Event = {
      * @param client
      * @returns {*}
      */
+    // TODO : Delete if unused
     getAllEvents: function (dbName, client) {
         const today = new Date();
         const db = client.db(dbName);

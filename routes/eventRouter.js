@@ -12,6 +12,7 @@ const upload = multer({storage: storage});
 /**
  * Récupère tous les events
  */
+// TODO : Delete if unused
 router.get('/', async (req, res) => {
     try {
         let eventData = await event.getAllEvents(dbManager.getDBname(), dbManager.getClient());
