@@ -15,7 +15,17 @@ const upload = multer({storage: storage});
  */
 router.get('/user', async (req, res) => {
     try {
-        let userData = await user.getUser(dbManager.getDBname(), dbManager.getClient(), req.body.nickname)
+        let nickname = ""
+        if (req.body.jwt) {
+            jwt.verify(req.body.jwt, process.env.TOKEN_SECRET, (err, user) => {
+                if (err) {
+                    res.json({error: err});
+                } else {
+                    nickname = user;
+                }
+            })
+        }
+        let userData = await user.getUser(dbManager.getDBname(), dbManager.getClient(), nickname)
         res.json({usr: userData});
     } catch (err) {
         res.status(400).send({error: err.message})
@@ -27,7 +37,17 @@ router.get('/user', async (req, res) => {
  */
 router.get('/getFavorites', async (req, res) => {
     try {
-        let userData = await user.getFavorites(dbManager.getDBname(), dbManager.getClient(), req.body.nickname)
+        let nickname = ""
+        if (req.body.jwt) {
+            jwt.verify(req.body.jwt, process.env.TOKEN_SECRET, (err, user) => {
+                if (err) {
+                    res.json({error: err});
+                } else {
+                    nickname = user;
+                }
+            })
+        }
+        let userData = await user.getFavorites(dbManager.getDBname(), dbManager.getClient(), nickname)
         res.json({usr: userData});
     } catch (err) {
         res.status(400).send({error: err.message})
@@ -39,7 +59,18 @@ router.get('/getFavorites', async (req, res) => {
  */
 router.post('/addFavorites', async (req, res) => {
     try {
-        let userData = await user.addFavorites(dbManager.getDBname(), dbManager.getClient(), req.body.nickname, req.body.eventId)
+        let nickname = ""
+        if (req.body.jwt) {
+            jwt.verify(req.body.jwt, process.env.TOKEN_SECRET, (err, user) => {
+                if (err) {
+                    res.json({error: err});
+                } else {
+                    nickname = user;
+                }
+            })
+        }
+
+        let userData = await user.addFavorites(dbManager.getDBname(), dbManager.getClient(), nickname, req.body.eventId)
         res.json({usr: userData});
     } catch (err) {
         res.status(400).send({error: err.message})
@@ -51,11 +82,22 @@ router.post('/addFavorites', async (req, res) => {
  */
 router.post('/addUser', upload.single('image'), async (req, res) => {
     try {
+        let nickname = ""
+        if (req.body.jwt) {
+            jwt.verify(req.body.jwt, process.env.TOKEN_SECRET, (err, user) => {
+                if (err) {
+                    res.json({error: err});
+                } else {
+                    nickname = user;
+                }
+            })
+        }
+
         let imageBase64;
         const pwd = await user.hashPassword(req.body.password);
         if (req.file) imageBase64 = req.file.buffer.toString('base64');
         await user.insertUser(dbManager.getDBname(), dbManager.getClient(), {
-            nickname: req.body.nickname,
+            nickname: nickname,
             mail: req.body.mail,
             pwd: pwd,
             name: req.body.name,

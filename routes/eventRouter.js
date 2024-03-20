@@ -3,6 +3,7 @@ const express = require('express');
 const event = require('../model/event')
 const {memoryStorage} = require("multer");
 const multer = require("multer");
+const jwt = require("jsonwebtoken");
 const router = express.Router();
 
 // Set up multer storage configuration
@@ -39,6 +40,17 @@ router.get('/filtre', async (req, res) => {
  */
 router.post('/', upload.single('image'), async (req, res) => {
     try {
+        let nickname = ""
+        if (req.body.jwt) {
+            jwt.verify(req.body.jwt, process.env.TOKEN_SECRET, (err, user) => {
+                if (err) {
+                    res.json({error: err});
+                } else {
+                    nickname = user;
+                }
+            })
+        }
+
         let image;
         if (req.file) {
             image = {
@@ -56,7 +68,7 @@ router.post('/', upload.single('image'), async (req, res) => {
             price: req.body.price,
             date: req.body.date,
             theme: req.body.theme,
-            owner: req.body.userId,
+            owner: nickname,
             image: image
         })
     } catch (err) {
@@ -114,7 +126,18 @@ router.get('/:id', async (req, res) => {
  */
 router.get('/ownership', async (req, res) => {
     try {
-        let eventData = await event.isUserOwner(dbManager.getDBname(), dbManager.getClient(), req.query.eventId, req.query.nickname)
+        let nickname = ""
+        if (req.body.jwt) {
+            jwt.verify(req.body.jwt, process.env.TOKEN_SECRET, (err, user) => {
+                if (err) {
+                    res.json({error: err});
+                } else {
+                    nickname = user;
+                }
+            })
+        }
+
+        let eventData = await event.isUserOwner(dbManager.getDBname(), dbManager.getClient(), req.query.eventId, nickname)
         res.json({eventData: eventData});
     } catch (err) {
         res.status(400).send({error: err.message})
