@@ -98,7 +98,7 @@ const Event = {
      */
     isUserOwner: function (dbName, client, eventId, nickname) {
         const db = client.db(dbName);
-        const data =  db.collection("events").findOne({_id: +eventId, owner: nickname});
+        const data = db.collection("events").findOne({_id: +eventId, owner: nickname});
         return data !== null
     }
 }

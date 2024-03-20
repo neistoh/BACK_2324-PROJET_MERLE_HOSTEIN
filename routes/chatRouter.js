@@ -42,9 +42,19 @@ router.get('/:id', async (req, res) => {
  * Ajoute un chat dans la collection `chats` de MongoDB
  */
 router.post('/createChat/:id', async (req, res) => {
+    let nickname = ""
+    if (req.body.jwt) {
+        jwt.verify(req.body.jwt, process.env.TOKEN_SECRET, (err, user) => {
+            if (err) {
+                res.json({error: err});
+            } else {
+                nickname = user;
+            }
+        })
+    }
     let chat = {
-        user1: req.body.user1,
-        user2: req.body.user2,
+        user1: nickname,
+        user2: req.body.dest,
         lastMessage: new Date().toString()
     };
     try {
@@ -59,10 +69,21 @@ router.post('/createChat/:id', async (req, res) => {
  * Ajoute un message dans la collection `messages` de MongoDB
  */
 router.post('/addMessage/:id', async (req, res) => {
+    let nickname = ""
+    if (req.body.jwt) {
+        jwt.verify(req.body.jwt, process.env.TOKEN_SECRET, (err, user) => {
+            if (err) {
+                res.json({error: err});
+            } else {
+                nickname = user;
+            }
+        })
+    }
+
     let msg = {
         text: req.body.text,
         chat: req.body.chat,
-        user: req.body.user,
+        user: nickname,
         sentAt: new Date().toString()
     };
     try {
