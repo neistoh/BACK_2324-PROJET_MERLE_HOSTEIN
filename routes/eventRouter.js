@@ -76,18 +76,6 @@ router.post('/', upload.single('image'), async (req, res) => {
     }
 })
 
-/**
- * Modifie un message dans la collection `messages` de MongoDB
- */
-router.put('/:id', async (req, res) => {
-    const event = req.body;
-    try {
-        event.updateEvent(dbManager.getDBname(), dbManager.getClient(), req.params.id, event)
-    } catch (err) {
-        res.status(400).send({error: err.message})
-    }
-})
-
 router.get('/favorites/:id', async (req, res) => {
     try {
         let eventData = await event.getAllFavoritesFromUsersOfEvent(dbManager.getDBname(), dbManager.getClient(), req.params.id)
@@ -143,5 +131,17 @@ router.get('/ownership', async (req, res) => {
         res.status(400).send({error: err.message})
     }
 });
+
+/**
+ * Modifie un message dans la collection `messages` de MongoDB
+ */
+router.put('/:id', async (req, res) => {
+    const event = req.body;
+    try {
+        event.updateEvent(dbManager.getDBname(), dbManager.getClient(), req.params.id, event)
+    } catch (err) {
+        res.status(400).send({error: err.message})
+    }
+})
 
 module.exports = router;

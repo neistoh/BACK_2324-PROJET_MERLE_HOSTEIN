@@ -27,18 +27,6 @@ router.get('/', async (req, res) => {
 });
 
 /**
- * Récupère la liste des messages d'un chat
- */
-router.get('/:id', async (req, res) => {
-    try {
-        let chatData = await chat.getChat(dbManager.getDBname(), dbManager.getClient(), req.params.id)
-        res.json({messages: chatData});
-    } catch (err) {
-        res.status(400).send({error: err.message})
-    }
-});
-
-/**
  * Ajoute un chat dans la collection `chats` de MongoDB
  */
 router.post('/createChat/:id', async (req, res) => {
@@ -89,6 +77,18 @@ router.post('/addMessage/:id', async (req, res) => {
     try {
         let chatData = await chat.insertMessage(dbManager.getDBname(), dbManager.getClient(), msg)
         res.json({messages: chatData}); //Renvoie true si bien inséré
+    } catch (err) {
+        res.status(400).send({error: err.message})
+    }
+});
+
+/**
+ * Récupère la liste des messages d'un chat
+ */
+router.get('/:id', async (req, res) => {
+    try {
+        let chatData = await chat.getChat(dbManager.getDBname(), dbManager.getClient(), req.params.id)
+        res.json({messages: chatData});
     } catch (err) {
         res.status(400).send({error: err.message})
     }
