@@ -125,7 +125,7 @@ router.get('/ownership', async (req, res) => {
             })
         }
 
-        let eventData = await event.isUserOwner(dbManager.getDBname(), dbManager.getClient(), req.query.eventId, nickname)
+        let eventData = event.isUserOwner(dbManager.getDBname(), dbManager.getClient(), req.query.eventId, nickname)
         res.json({eventData: eventData});
     } catch (err) {
         res.status(400).send({error: err.message})
