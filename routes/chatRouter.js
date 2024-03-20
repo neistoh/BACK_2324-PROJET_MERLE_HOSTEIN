@@ -18,16 +18,24 @@ router.get('/', async (req, res) => {
             }
         })
     }
-    let chatData = await chat.getAllChats(dbManager.getDBname(), dbManager.getClient(), nickname)
-    res.json({chats: chatData});
+    try {
+        let chatData = await chat.getAllChats(dbManager.getDBname(), dbManager.getClient(), nickname)
+        res.json({chats: chatData});
+    } catch (err) {
+        res.status(400).send({error: err.message})
+    }
 });
 
 /**
  * Récupère la liste des messages d'un chat
  */
 router.get('/:id', async (req, res) => {
-    let chatData = await chat.getChat(dbManager.getDBname(), dbManager.getClient(), req.params.id)
-    res.json({messages: chatData});
+    try {
+        let chatData = await chat.getChat(dbManager.getDBname(), dbManager.getClient(), req.params.id)
+        res.json({messages: chatData});
+    } catch (err) {
+        res.status(400).send({error: err.message})
+    }
 });
 
 /**
@@ -39,8 +47,12 @@ router.post('/createChat/:id', async (req, res) => {
         user2: req.body.user2,
         lastMessage: new Date().toString()
     };
-    let chatData = await chat.createChat(dbManager.getDBname(), dbManager.getClient(), chat)
-    res.json({chat: chatData}); //Renvoie true si bien inséré
+    try {
+        let chatData = await chat.createChat(dbManager.getDBname(), dbManager.getClient(), chat)
+        res.json({chat: chatData}); //Renvoie true si bien inséré
+    } catch (err) {
+        res.status(400).send({error: err.message})
+    }
 });
 
 /**
@@ -53,8 +65,12 @@ router.post('/addMessage/:id', async (req, res) => {
         user: req.body.user,
         sentAt: new Date().toString()
     };
-    let chatData = await chat.insertMessage(dbManager.getDBname(), dbManager.getClient(), msg)
-    res.json({messages: chatData}); //Renvoie true si bien inséré
+    try {
+        let chatData = await chat.insertMessage(dbManager.getDBname(), dbManager.getClient(), msg)
+        res.json({messages: chatData}); //Renvoie true si bien inséré
+    } catch (err) {
+        res.status(400).send({error: err.message})
+    }
 });
 
 module.exports = router;

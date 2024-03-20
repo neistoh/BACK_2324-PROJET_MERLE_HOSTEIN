@@ -71,11 +71,9 @@ const Event = {
      * @param dbName
      * @param client
      * @param filtre
-     * @param tri
-     * @param ordre
      * @returns {*}
      */
-    getEventsFiltered: function (dbName, client, filtre, tri, ordre) {
+    getEventsFiltered: function (dbName, client, filtre) {
         const today = new Date();
         const db = client.db(dbName);
         let query = {}
@@ -86,8 +84,8 @@ const Event = {
         }
 
         query.date = {$gte: today};
-        if (tri === "date") return db.collection("events").find(query).sort({date: ordre}).toArray()
-        else return db.collection("events").find(query).sort({price: ordre}).toArray()
+        if (filtre.tri === "date") return db.collection("events").find(query).sort({date: filtre.ordre}).toArray()
+        else return db.collection("events").find(query).sort({price: filtre.ordre}).toArray()
     },
 
     /**

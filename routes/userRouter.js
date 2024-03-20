@@ -14,24 +14,36 @@ const upload = multer({storage: storage});
  * Récupère les infos d'un utilisateur
  */
 router.get('/user', async (req, res) => {
-    let userData = await user.getUser(dbManager.getDBname(), dbManager.getClient(), req.body.nickname)
-    res.json({usr: userData});
+    try {
+        let userData = await user.getUser(dbManager.getDBname(), dbManager.getClient(), req.body.nickname)
+        res.json({usr: userData});
+    } catch (err) {
+        res.status(400).send({error: err.message})
+    }
 });
 
 /**
  * Récupère les évènements favoris d'un utilisateur
  */
 router.get('/getFavorites', async (req, res) => {
-    let userData = await user.getFavorites(dbManager.getDBname(), dbManager.getClient(), req.body.nickname)
-    res.json({usr: userData});
+    try {
+        let userData = await user.getFavorites(dbManager.getDBname(), dbManager.getClient(), req.body.nickname)
+        res.json({usr: userData});
+    } catch (err) {
+        res.status(400).send({error: err.message})
+    }
 });
 
 /**
  * Ajoute un évènement aux favoris d'un utilisateur
  */
 router.post('/addFavorites', async (req, res) => {
-    let userData = await user.addFavorites(dbManager.getDBname(), dbManager.getClient(), req.body.nickname, req.body.eventId)
-    res.json({usr: userData});
+    try {
+        let userData = await user.addFavorites(dbManager.getDBname(), dbManager.getClient(), req.body.nickname, req.body.eventId)
+        res.json({usr: userData});
+    } catch (err) {
+        res.status(400).send({error: err.message})
+    }
 });
 
 /**
