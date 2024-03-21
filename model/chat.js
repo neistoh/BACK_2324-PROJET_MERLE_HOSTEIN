@@ -8,10 +8,12 @@ const Chat = {
      */
     getAllChats: function (dbName, client, nickname) {
         const db = client.db(dbName);
+        console.log(nickname)
+
         return db.collection("chats").find({
             $or: [
-                {User1: nickname},
-                {User2: nickname}
+                {"user1": nickname},
+                {"user2": nickname}
             ]
         }).sort({lastMessage: -1}).toArray();
     },

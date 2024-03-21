@@ -79,17 +79,17 @@ const User = {
      * @param passwordToAshe
      * @returns {Promise<unknown>}
      */
-    hashPassword: function (passwordToAshe) {
-        return new Promise(() => {
+    hashPassword: async function (passwordToAshe) {
+        return new Promise(res => {
             bcrypt.genSalt(10, function (err, salt) {
                 if (err)
-                    return err;
+                    res(err);
 
                 bcrypt.hash(passwordToAshe, salt, function (err, hash) {
                     console.log(hash);
                     if (err)
-                        return err;
-                    return hash;
+                       res(err);
+                    res(hash);
                 });
             });
         });
@@ -110,8 +110,8 @@ const User = {
                     res(isPasswordMatch);
                 }
                 res(isPasswordMatch);
-            })
-        })
+            });
+        });
     }
 
 }

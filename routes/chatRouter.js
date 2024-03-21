@@ -9,18 +9,19 @@ const jwt = require("jsonwebtoken");
  */
 router.get('/', async (req, res) => {
     let nickname = ""
-    if (req.body.jwt) {
-        jwt.verify(req.body.jwt, process.env.TOKEN_SECRET, (err, user) => {
+    if (req.query.jwt) {
+        jwt.verify(req.query.jwt, process.env.TOKEN_SECRET, (err, user) => {
             if (err) {
                 res.json({error: err});
             } else {
-                nickname = user;
+                nickname = user.username;
             }
         })
     }
     try {
         let chatData = await chat.getAllChats(dbManager.getDBname(), dbManager.getClient(), nickname)
-        res.json({chats: chatData});
+        console.log(chatData);
+        res.json({eventData: chatData});
     } catch (err) {
         res.status(400).send({error: err.message})
     }

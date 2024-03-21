@@ -1,10 +1,9 @@
-const process = require("node:process");
 const {MongoClient} = require("mongodb");
 const {configDotenv} = require("dotenv");
 require('dotenv').config()
 
 const args = process.argv.slice(2);
-const url = args[0] ?? process.env.MONDODB_URI;
+const url = args[0] ?? "mongodb+srv://test:test@isenconnect.wpaxvgp.mongodb.net";
 const dbName = args[1] ?? "IsenConnect";
 const client = new MongoClient(url);
 

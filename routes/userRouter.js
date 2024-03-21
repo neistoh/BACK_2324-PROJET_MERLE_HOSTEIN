@@ -82,22 +82,20 @@ router.post('/addFavorites', async (req, res) => {
  */
 router.post('/addUser', upload.single('image'), async (req, res) => {
     try {
-        let imageBase64;
+        console.log('Là')
         const pwd = await user.hashPassword(req.body.password);
-        if (req.file) imageBase64 = req.file.buffer.toString('base64');
+        console.log(req.body)
         await user.insertUser(dbManager.getDBname(), dbManager.getClient(), {
-            nickname: req.body.nickname,
-            mail: req.body.mail,
-            pwd: pwd,
-            name: req.body.name,
-            firstName: req.body.firstName,
-            birthDate: req.body.birthDate,
-            avatar: {
-                filename: req.file.originalname,
-                contentType: req.file.mimetype,
-                data: imageBase64,
-            }
+            "nickname": req.body.nickname,
+            "mail": req.body.mail,
+            "password": pwd,
+            "name": req.body.name,
+            "firstname": req.body.firstname,
+            "birthdate": req.body.birthdate,
+            "avatar": req.body.avatar
         })
+        console.log('Ici');
+        res.send({eventData:true});
     } catch (err) {
         res.status(400).send(err.message)
     }
