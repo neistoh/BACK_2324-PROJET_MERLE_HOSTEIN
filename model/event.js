@@ -16,17 +16,36 @@ const Event = {
      * Get all events in the collection "events" created by a specific user
      * @param dbName
      * @param client
-     * @param userId
+     * @param userName
      * @returns {*}
      */
-    getAllEventsFromUser: function (dbName, client, userId) {
+    getAllEventsFromUser: function (dbName, client, userName) {
         const db = client.db(dbName);
-        return db.collection("events").find({"owner": +userId}).sort({name: -1}).toArray();
+        return db.collection("events").find({"owner": userName}).sort({name: -1}).toArray();
     },
 
-    getAllFavoritesFromUsersOfEvent: function (dbName, client, eventId) {
+    getUsersFromEventInFavorites: function (dbName, client, eventId) {
         const db = client.db(dbName);
         return db.collection("favorites").find({"event": +eventId}).sort({name: -1}).toArray();
+    },
+
+    getEventFromUserInFavorites: function (dbName, client, userNickname) {
+        const db = client.db(dbName);
+        return db.collection("favorites").aggregate([
+            {
+              $match: {
+                  user: userNickname
+              }
+            },
+            { $lookup:
+                    {
+                        from: "events",
+                        localField: "event",
+                        foreignField: "_id",
+                        as: "listeEvents"
+                    }
+            }
+        ]).sort({event: -1}).toArray();
     },
 
     /**

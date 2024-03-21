@@ -78,7 +78,7 @@ router.post('/', upload.single('image'), async (req, res) => {
 
 router.get('/favorites/:id', async (req, res) => {
     try {
-        let eventData = await event.getAllFavoritesFromUsersOfEvent(dbManager.getDBname(), dbManager.getClient(), req.params.id)
+        let eventData = await event.getUsersFromEventInFavorites(dbManager.getDBname(), dbManager.getClient(), req.params.id)
         res.json({eventData: eventData});
     } catch (err) {
         res.status(400).send({error: err.message})
@@ -88,9 +88,20 @@ router.get('/favorites/:id', async (req, res) => {
 /**
  * Récupère tous les events d'un utilisateur
  */
-router.get('/byUser/:id', async (req, res) => {
+router.get('/byUser', async (req, res) => {
     try {
-        let eventData = await event.getAllEventsFromUser(dbManager.getDBname(), dbManager.getClient(), req.params.id)
+        let nickname = ""
+        if (req.query.jwt) {
+            jwt.verify(req.query.jwt, process.env.TOKEN_SECRET, (err, user) => {
+                if (err) {
+                    res.json({error: err});
+                } else {
+                    nickname = user.username;
+                }
+            })
+        }
+
+        let eventData = await event.getAllEventsFromUser(dbManager.getDBname(), dbManager.getClient(), nickname)
         res.json({eventData: eventData});
     } catch (err) {
         res.status(400).send({error: err.message})
@@ -98,11 +109,23 @@ router.get('/byUser/:id', async (req, res) => {
 });
 
 /**
- * Récupère un event selon son id
+ * Récupère tous les events d'un utilisateur
  */
-router.get('/:id', async (req, res) => {
+router.get('/favoritesByUser', async (req, res) => {
     try {
-        let eventData = await event.getEvent(dbManager.getDBname(), dbManager.getClient(), req.params.id)
+        let nickname = ""
+        if (req.query.jwt) {
+            jwt.verify(req.query.jwt, process.env.TOKEN_SECRET, (err, user) => {
+                if (err) {
+                    res.json({error: err});
+                } else {
+                    nickname = user.username;
+                }
+            })
+        }
+
+        let eventData = await event.getEventFromUserInFavorites(dbManager.getDBname(), dbManager.getClient(), nickname)
+        console.log(eventData);
         res.json({eventData: eventData});
     } catch (err) {
         res.status(400).send({error: err.message})
@@ -133,6 +156,18 @@ router.get('/ownership', async (req, res) => {
 });
 
 /**
+ * Récupère un event selon son id
+ */
+router.get('/:id', async (req, res) => {
+    try {
+        let eventData = await event.getEvent(dbManager.getDBname(), dbManager.getClient(), req.params.id)
+        res.json({eventData: eventData});
+    } catch (err) {
+        res.status(400).send({error: err.message})
+    }
+});
+
+/**
  * Modifie un message dans la collection `messages` de MongoDB
  */
 router.put('/:id', async (req, res) => {
@@ -144,17 +179,5 @@ router.put('/:id', async (req, res) => {
         res.status(400).send({error: err.message})
     }
 })
-
-/**
- * Récupère un event selon son id
- */
-router.get('/:id', async (req, res) => {
-    try {
-        let eventData = await event.getEvent(dbManager.getDBname(), dbManager.getClient(), req.params.id)
-        res.json({eventData: eventData});
-    } catch (err) {
-        res.status(400).send({error: err.message})
-    }
-});
 
 module.exports = router;

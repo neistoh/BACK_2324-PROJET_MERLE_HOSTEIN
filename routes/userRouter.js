@@ -13,11 +13,11 @@ const upload = multer({storage: storage});
 /**
  * Récupère les infos d'un utilisateur
  */
-router.get('/user', async (req, res) => {
+router.get('/', async (req, res) => {
     try {
         let nickname = ""
-        if (req.body.jwt) {
-            jwt.verify(req.body.jwt, process.env.TOKEN_SECRET, (err, user) => {
+        if (req.query.jwt) {
+            jwt.verify(req.query.jwt, process.env.TOKEN_SECRET, (err, user) => {
                 if (err) {
                     res.json({error: err});
                 } else {
@@ -26,7 +26,7 @@ router.get('/user', async (req, res) => {
             })
         }
         let userData = await user.getUser(dbManager.getDBname(), dbManager.getClient(), nickname)
-        res.json({usr: userData});
+        res.json({eventData: userData});
     } catch (err) {
         res.status(400).send({error: err.message})
     }
