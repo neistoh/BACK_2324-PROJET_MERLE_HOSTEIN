@@ -14,7 +14,7 @@ const chat = require("./model/chat")
 const app = express();
 const server = http.createServer(app);
 const io = new Server(server);
-const port = 3000;
+const port = 10000;
 
 app.use(express.static('public'));
 app.use(express.urlencoded({extended: true}));
