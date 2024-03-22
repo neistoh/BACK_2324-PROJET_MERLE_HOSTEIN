@@ -13,15 +13,22 @@ const {Server} = require("socket.io");
 
 const app = express();
 const server = http.createServer(app);
-const io = require('socket.io');
-
-const socketIo = new io.Server(server, {
+const io = require('socket.io')(server, {
     cors: {
         origin: '*',
-        methods: ["GET", "POST"],
-        credentials: true
+
+        handlePreflightRequest: (req,res)=>{
+            res.writeHead(200,{
+                    "Access-Control-Allow-Origin": "*",
+                    "Access-Control-Allow-Methods": "GET,POST",
+                    "Access-Control-Allow-Headers": "my-custom-header",
+                    "Access-Control-Allow-Credentials": true
+                })
+        }
+
+
     }
-})
+});
 
 //const io = new io(server);
 const port = 10000;
@@ -31,7 +38,7 @@ app.use(express.urlencoded({extended: true}));
 app.use(cors())
 app.use(express.json());
 
-socketIo.on('connection', (socket) => {
+io.on('connection', (socket) => {
     console.log(`New connection. Socket id : ${socket.id}`);
     /**
      * If a user disconnect
@@ -44,28 +51,28 @@ socketIo.on('connection', (socket) => {
      * Return all chats of a user
      */
     socket.on('getAllChats', (nickname) => {
-        socketIo.emit(chat.getAllChats(dbManager.getDBname(), dbManager.getClient(), nickname))
+        io.emit(chat.getAllChats(dbManager.getDBname(), dbManager.getClient(), nickname))
     });
 
     /**
      * Return the messages of a chat
      */
     socket.on('getChat', (id) => {
-        socketIo.emit(chat.getChat(dbManager.getDBname(), dbManager.getClient(), id));
+        io.emit(chat.getChat(dbManager.getDBname(), dbManager.getClient(), id));
     });
 
     /**
      * Create a chat
      */
     socket.on('createChat', (chat) => {
-        socketIo.emit(chat.createChat(dbManager.getDBname(), dbManager.getClient(), chat));
+        io.emit(chat.createChat(dbManager.getDBname(), dbManager.getClient(), chat));
     });
 
     /**
      * Add a message in a chat
      */
     socket.on("postMessage", (msg) => {
-        socketIo.emit(chat.insertMessage(dbManager.getDBname(), dbManager.getClient(), msg))
+        io.emit(chat.insertMessage(dbManager.getDBname(), dbManager.getClient(), msg))
     })
 });
 
