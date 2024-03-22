@@ -27,7 +27,9 @@ const Chat = {
      */
     getChat: function (dbName, client, id) {
         const db = client.db(dbName);
-        return db.collection("messages").find({"chat": +id}).sort({sentAt: -1}).toArray();
+        const response = db.collection("messages").find({"chat": +id}).sort({sentAt: -1}).toArray()
+        console.log(response);
+        return response;
     },
 
     /**
