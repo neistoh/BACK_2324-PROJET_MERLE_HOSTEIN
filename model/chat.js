@@ -51,7 +51,7 @@ const Chat = {
      */
     insertMessage: function (dbName, client, msg) {
         const db = client.db(dbName);
-        return db.collection("messages").insertOne(msg);
+        db.collection("messages").insertOne(msg);
     }
 }
 
