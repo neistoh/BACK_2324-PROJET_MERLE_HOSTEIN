@@ -60,9 +60,9 @@ io.on('connection', (socket) => {
     /**
      * Add a message in a chat
      */
-    socket.on("postMessage", (msg, callback) => {
+    socket.on("postMessage", (msg) => {
+        console.log(msg);
         chat.insertMessage(dbManager.getDBname(), dbManager.getClient(), msg);
-        callback(msg);
     })
 });
 
