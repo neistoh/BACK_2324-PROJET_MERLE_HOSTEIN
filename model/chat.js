@@ -52,7 +52,7 @@ const Chat = {
     insertMessage: function (dbName, client, msg) {
         const db = client.db(dbName);
         console.log("Essai insert: "+msg)
-        db.collection("messages").insertOne(msg);
+        db.collection("messages").insertOne(JSON.parse(msg));
     }
 }
 
