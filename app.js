@@ -47,6 +47,7 @@ io.on('connection', (socket) => {
      * Return the messages of a chat
      */
     socket.on('getChat', (id, callback) => {
+        console.log("Get Chat");
         callback(chat.getChat(dbManager.getDBname(), dbManager.getClient(), id))
     });
 
