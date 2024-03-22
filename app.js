@@ -48,7 +48,7 @@ io.on('connection', (socket) => {
      */
     socket.on('getChat', (id, callback) => {
         console.log("Get Chat");
-        callback(chat.getChat(dbManager.getDBname(), dbManager.getClient(), id))
+        callback({ reposne: chat.getChat(dbManager.getDBname(), dbManager.getClient(), id)})
     });
 
     /**
