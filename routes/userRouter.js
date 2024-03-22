@@ -131,7 +131,7 @@ router.post('/connect',
                     res.status(401).json({error: "badPassword", action: "badPassword"});
                     return;
                 }
-                const jwtSign = user.generateAccessToken({username: 'test'})
+                const jwtSign = user.generateAccessToken({username: req.body.nickname})
                 res.json({index: "user", droits: "W", jwt: jwtSign});
                 return;
             }
