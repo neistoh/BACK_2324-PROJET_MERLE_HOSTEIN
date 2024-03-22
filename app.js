@@ -9,26 +9,29 @@ const userRouter = require(path.join(__dirname, "/routes/userRouter"));
 
 const dbManager = require('./MongoDB/dbManager');
 const chat = require("./model/chat")
+const {Server} = require("socket.io");
 
 const app = express();
 const server = http.createServer(app);
-const io = require('socket.io')(server, {
+const io = require('socket.io');
+
+const socketIo = new io.Server(server, {
     cors: {
         origin: '*',
         methods: ["GET", "POST"],
         credentials: true
     }
-});
+})
 
 //const io = new io(server);
 const port = 10000;
 
 app.use(express.static('public'));
 app.use(express.urlencoded({extended: true}));
-app.options('*',cors())
+app.use(cors())
 app.use(express.json());
 
-io.on('connection', (socket) => {
+socketIo.on('connection', (socket) => {
     console.log(`New connection. Socket id : ${socket.id}`);
     /**
      * If a user disconnect
@@ -41,28 +44,28 @@ io.on('connection', (socket) => {
      * Return all chats of a user
      */
     socket.on('getAllChats', (nickname) => {
-        io.emit(chat.getAllChats(dbManager.getDBname(), dbManager.getClient(), nickname))
+        socketIo.emit(chat.getAllChats(dbManager.getDBname(), dbManager.getClient(), nickname))
     });
 
     /**
      * Return the messages of a chat
      */
     socket.on('getChat', (id) => {
-        io.emit(chat.getChat(dbManager.getDBname(), dbManager.getClient(), id));
+        socketIo.emit(chat.getChat(dbManager.getDBname(), dbManager.getClient(), id));
     });
 
     /**
      * Create a chat
      */
     socket.on('createChat', (chat) => {
-        io.emit(chat.createChat(dbManager.getDBname(), dbManager.getClient(), chat));
+        socketIo.emit(chat.createChat(dbManager.getDBname(), dbManager.getClient(), chat));
     });
 
     /**
      * Add a message in a chat
      */
     socket.on("postMessage", (msg) => {
-        io.emit(chat.insertMessage(dbManager.getDBname(), dbManager.getClient(), msg))
+        socketIo.emit(chat.insertMessage(dbManager.getDBname(), dbManager.getClient(), msg))
     })
 });
 
