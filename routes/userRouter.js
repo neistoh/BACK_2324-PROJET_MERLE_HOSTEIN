@@ -25,7 +25,7 @@ router.get('/', async (req, res) => {
                 }
             })
         }else if(req.query.nickname){
-            nickname = req.params.nickname;
+            nickname = req.query.nickname;
         }
         let userData = await user.getUser(dbManager.getDBname(), dbManager.getClient(), nickname)
         res.json({eventData: userData});
