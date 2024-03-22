@@ -13,7 +13,20 @@ const {Server} = require("socket.io");
 
 const app = express();
 const server = http.createServer(app);
-const io = require('socket.io');
+const io = require('socket.io')(server, {
+    cors: {
+        origin: '*',
+
+        handlePreflightRequest: (req,res)=>{
+            res.writeHead(200,{
+                    "Access-Control-Allow-Origin": "*",
+                    "Access-Control-Allow-Methods": "GET,POST",
+                    "Access-Control-Allow-Headers": "my-custom-header",
+                    "Access-Control-Allow-Credentials": true
+                })
+        }
+    }
+});
 
 io.set('origins','*');
 
