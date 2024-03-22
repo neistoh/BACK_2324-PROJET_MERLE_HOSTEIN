@@ -1,7 +1,6 @@
 const express = require('express');
 const path = require("path");
 const http = require('http');
-const {Server} = require("socket.io");
 const cors = require('cors');
 
 const chatRouter = require(path.join(__dirname, "/routes/chatRouter"));
@@ -13,7 +12,13 @@ const chat = require("./model/chat")
 
 const app = express();
 const server = http.createServer(app);
-const io = new Server(server);
+const io = require('socket.io')(server, {
+    cors: {
+        origin: '*',
+    }
+});
+
+//const io = new io(server);
 const port = 10000;
 
 app.use(express.static('public'));
