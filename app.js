@@ -53,15 +53,16 @@ io.on('connection', (socket) => {
     /**
      * Create a chat
      */
-    socket.on('createChat', (chat) => {
-        io.emit(chat.createChat(dbManager.getDBname(), dbManager.getClient(), chat));
+    socket.on('createChat', (chatOn) => {
+        io.emit(chat.createChat(dbManager.getDBname(), dbManager.getClient(), chatOn));
     });
 
     /**
      * Add a message in a chat
      */
-    socket.on("postMessage", (msg) => {
-        io.emit(chat.insertMessage(dbManager.getDBname(), dbManager.getClient(), msg))
+    socket.on("postMessage", (msg, callback) => {
+        chat.insertMessage(dbManager.getDBname(), dbManager.getClient(), msg);
+        callback(msg);
     })
 });
 
